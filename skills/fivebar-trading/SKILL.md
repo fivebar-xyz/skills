@@ -5,7 +5,7 @@ license: MIT
 compatibility: Needs the Fivebar MCP server (https://fivebar.xyz/mcp, free, no key) and a wallet the user controls to sign swaps.
 metadata:
   author: fivebar
-  version: "1.0.0"
+  version: "1.0.1"
   homepage: https://fivebar.xyz/mcp
 ---
 
@@ -65,6 +65,7 @@ Claude Code: `claude mcp add --transport http fivebar https://fivebar.xyz/mcp`. 
 ### 4. Swap
 
 - After the user says yes: `swap_build` with the same arguments, including `taker`.
+- If the agent has the Fivebar Branch installed (the local `fivebar` MCP with a `swap` tool), use its `swap` tool instead: it builds, checks (known router, exact approval, chain, the user's swap ceiling) and signs locally with the agent's own wallet, so this step's checks happen inside it. Still show the quote and get a yes first.
 - EVM chains return steps in order: an approval (only when needed), then the swap. Check the approval is exact (rule 5) and the swap goes to the contract the build named. The user's wallet signs and sends each step, in order, waiting for each to confirm.
 - Solana returns one versioned transaction (base64) for the user's wallet to sign and send.
 - If the quote has moved since the user said yes (a worse minimum, new warnings), show the new numbers and ask again.
@@ -90,6 +91,7 @@ Claude Code: `claude mcp add --transport http fivebar https://fivebar.xyz/mcp`. 
 - **"xStocks coming soon"**: stock tokens can't be swapped yet; offer `stock_quote` for the price.
 - **"This wallet can't swap through Fivebar"**: the wallet is on the US sanctions list. Don't retry with another route or wallet.
 - **Rate limit**: 60 calls a minute. Wait and retry once.
+- **"couldn't run (the router was busy)"** in `token_risk`, or **"couldn't price it right now"** in a quote or holdings: the check didn't happen. It says nothing about the token, good or bad. Wait a minute and run it again before buying.
 - **No route / no liquidity**: the token can't be traded at that size right now. Try a smaller amount or stop.
 
 See [references/CHAINS.md](references/CHAINS.md) for chain names and base assets.

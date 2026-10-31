@@ -29,6 +29,12 @@ The routine a careful trader follows, as one tool call per step:
 npx skills add fivebar-xyz/skills
 ```
 
+From a script or another agent (no prompts, every agent on the machine):
+
+```
+npx -y skills add fivebar-xyz/skills -y -g --agent '*'
+```
+
 Then connect the MCP if your agent doesn't have it yet: add `https://fivebar.xyz/mcp` as a remote (Streamable HTTP) MCP server. Free, no key.
 
 **Any agent**: the MCP sends a short version of this routine when it connects, and offers three prompts: "Trade a token safely", "Is this token safe?" and "What do I hold?".
