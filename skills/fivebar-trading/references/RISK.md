@@ -6,8 +6,8 @@
 
 | check | What it means | Level |
 | --- | --- | --- |
-| sell | A test bought $100 of the token but found no route to sell it back. Possible honeypot: you can buy but not sell. | high |
-| liquidity | Cost of buying then selling $100: over 30% is high (very thin pool or hidden fees), over 8% is caution (keep size small). No route to buy $100 at all is caution. | high, caution or info |
+| sell | A test bought 100 USD of the token but found no route to sell it back. Possible honeypot: you can buy but not sell. | high |
+| liquidity | Cost of buying then selling 100 USD: over 30% is high (very thin pool or hidden fees), over 8% is caution (keep size small). No route to buy 100 USD at all is caution. | high, caution or info |
 | known | A major asset (ETH, WETH, a stablecoin, SOL). Nothing to check. | info |
 | not checked | A check couldn't run right now (a data source was down). Say which; don't treat it as passed. | info |
 

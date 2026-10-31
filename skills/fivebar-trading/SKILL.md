@@ -5,7 +5,7 @@ license: MIT
 compatibility: Needs the Fivebar MCP server (https://fivebar.xyz/mcp, free, no key) and a wallet the user controls to sign swaps.
 metadata:
   author: fivebar
-  version: "1.0.1"
+  version: "1.0.2"
   homepage: https://fivebar.xyz/mcp
 ---
 
@@ -32,7 +32,7 @@ Claude Code: `claude mcp add --transport http fivebar https://fivebar.xyz/mcp`. 
 3. **Quote before you build.** Show the `swap_quote` result before calling `swap_build`.
 4. **The user signs.** Fivebar returns unsigned transactions. Never ask for, accept, store or repeat a private key or seed phrase. If the user pastes one, tell them to move their funds to a new wallet.
 5. **Exact approvals only.** An approval step must be for the exact sell amount, to the router contract the build named. Never sign an unlimited approval or an approval to any other address.
-6. **The user decides.** Get a clear yes before every swap unless the user has set a standing rule (for example "swaps under $25 without asking"). Never go above the size they set.
+6. **The user decides.** Get a clear yes before every swap unless the user has set a standing rule (for example "swaps under 25 USD without asking"). Never go above the size they set.
 7. **Not financial advice.** Report what the tools show. Don't predict prices or tell the user what to buy.
 
 ## The routine
@@ -46,10 +46,10 @@ Claude Code: `claude mcp add --transport http fivebar https://fivebar.xyz/mcp`. 
 ### 2. Check
 
 - `token_risk` with the address (and `chain`). Read the verdict:
-  - **high**: stop. Tell the user what was found (for example "the $100 buy-then-sell test failed: you can buy but not sell", "a 25% transfer fee", "someone can still mint more"). Only continue if they insist after hearing it, and say again that they could lose the whole amount.
+  - **high**: stop. Tell the user what was found (for example "the 100 USD buy-then-sell test failed: you can buy but not sell", "a 25% transfer fee", "someone can still mint more"). Only continue if they insist after hearing it, and say again that they could lose the whole amount.
   - **caution**: explain each flag in plain words and ask whether to continue.
   - **low**: say so briefly and continue. Low means no known trap was found, not that the token is safe.
-- The round-trip test shows what buying and then selling $100 costs. Above 8% is flagged caution (expensive exits); above 30%, or no route back at all, is high.
+- The round-trip test shows what buying and then selling 100 USD costs. Above 8% is flagged caution (expensive exits); above 30%, or no route back at all, is high.
 - See [references/RISK.md](references/RISK.md) for what each flag means.
 
 ### 3. Size
