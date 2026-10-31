@@ -37,4 +37,4 @@ Then connect the MCP if your agent doesn't have it yet: add `https://fivebar.xyz
 
 Data tools are free. Swaps built through Fivebar carry a 0.5% fee, paid inside the swap and shown in every quote next to the router's fee and gas.
 
-Not financial advice. [fivebar.xyz](https://fivebar.xyz)
+Not financial advice. [fivebar.xyz](https://fivebar.xyz) · [Privacy](https://fivebar.xyz/privacy)
