@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "fivebar": {
+      "type": "http",
+      "url": "https://fivebar.xyz/mcp"
+    }
+  }
+}
