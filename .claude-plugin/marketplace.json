@@ -1,0 +1,12 @@
+{
+  "name": "fivebar",
+  "owner": { "name": "fivebar", "url": "https://fivebar.xyz" },
+  "description": "Fivebar's trading tools for AI agents.",
+  "plugins": [
+    {
+      "name": "fivebar",
+      "source": "./",
+      "description": "The Fivebar MCP plus the fivebar-trading skill: find tokens by address, check them before buying, quote with every fee, swap with your own wallet, watch your holdings."
+    }
+  ]
+}

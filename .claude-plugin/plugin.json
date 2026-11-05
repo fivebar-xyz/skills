@@ -1,0 +1,11 @@
+{
+  "name": "fivebar",
+  "displayName": "Fivebar",
+  "description": "Trade tokens safely on Robinhood Chain, Solana, Base, Ethereum and Arbitrum: the Fivebar MCP (prices, risk checks, quotes, unsigned swaps, wallet holdings) plus the fivebar-trading skill, which teaches the routine: find by address, check, quote, swap with your own wallet, watch.",
+  "version": "1.0.0",
+  "author": { "name": "fivebar" },
+  "homepage": "https://fivebar.xyz/mcp",
+  "repository": "https://github.com/fivebar-xyz/skills",
+  "license": "MIT",
+  "keywords": ["trading", "crypto", "swap", "mcp", "robinhood-chain", "solana", "base", "token-risk", "x402"]
+}
