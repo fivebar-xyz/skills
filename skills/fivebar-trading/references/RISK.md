@@ -11,7 +11,7 @@
 | known | A major asset (ETH, WETH, a stablecoin, SOL). Nothing to check. | info |
 | not checked | A check couldn't run right now (a data source was down). Say which; don't treat it as passed. | info |
 
-## EVM chains (Robinhood Chain, Base, Ethereum, Arbitrum)
+## EVM chains (Robinhood Chain, HyperEVM, Base, Ethereum, Arbitrum)
 
 | check | What it means | Level |
 | --- | --- | --- |

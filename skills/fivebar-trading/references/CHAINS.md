@@ -1,10 +1,11 @@
 # Chains and base assets
 
-Pass `chain` to `token_quote`, `token_risk`, `swap_quote`, `swap_build` and `wallet_holdings`. A 0x address defaults to Robinhood Chain; a Solana address (base58) means Solana.
+Pass `chain` to `token_quote`, `token_risk`, `swap_quote`, `swap_build`, `wallet_holdings` and `wallet_flows`. A 0x address defaults to Robinhood Chain; a Solana address (base58) means Solana.
 
 | chain | Name | Base assets by name | Notes |
 | --- | --- | --- | --- |
 | robinhood | Robinhood Chain (4663) | ETH, WETH, USDG | Home chain. Stock tokens can't be swapped yet. |
+| hyperevm | HyperEVM (999) | HYPE, WHYPE, USDT0, USDC | Hyperliquid's EVM chain. Gas is HYPE, not ETH. |
 | base | Base (8453) | ETH, WETH, USDC | |
 | ethereum | Ethereum (1) | ETH, WETH, USDC, USDT | Gas costs more; say so on small trades. |
 | arbitrum | Arbitrum (42161) | ETH, WETH, USDC, USDT | |

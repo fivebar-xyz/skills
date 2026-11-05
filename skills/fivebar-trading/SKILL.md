@@ -1,11 +1,11 @@
 ---
 name: fivebar-trading
-description: Trade tokens safely through the Fivebar MCP on Robinhood Chain, Solana, Base, Ethereum and Arbitrum. Finds a token by contract address, checks it for rugs, honeypots and taxes before buying, quotes with every fee shown, builds unsigned swaps for the user's own wallet, and checks holdings after. Use when the user wants to buy, sell or swap a token or memecoin, asks if a token is safe, wants a price or a quote, or asks what a wallet holds.
+description: Trade tokens safely through the Fivebar MCP on Robinhood Chain, HyperEVM, Solana, Base, Ethereum and Arbitrum. Finds a token by contract address, checks it for rugs, honeypots and taxes before buying, quotes with every fee shown, builds unsigned swaps for the user's own wallet, and checks holdings after. Use when the user wants to buy, sell or swap a token or memecoin, asks if a token is safe, wants a price or a quote, or asks what a wallet holds.
 license: MIT
 compatibility: Needs the Fivebar MCP server (https://fivebar.xyz/mcp, free, no key) and a wallet the user controls to sign swaps.
 metadata:
   author: fivebar
-  version: "1.0.2"
+  version: "1.0.3"
   homepage: https://fivebar.xyz/mcp
 ---
 
@@ -27,7 +27,7 @@ Claude Code: `claude mcp add --transport http fivebar https://fivebar.xyz/mcp`. 
 
 ## Rules that always apply
 
-1. **Contract addresses, never tickers.** Anyone can launch a token with any ticker. Only the chain's base assets go by name (ETH, WETH, USDG on Robinhood Chain; ETH, WETH, USDC, USDT on Base, Ethereum and Arbitrum; SOL, USDC, USDT on Solana). For anything else, get the address from the user or from a source they trust. If they give only a ticker, ask for the address; don't guess one.
+1. **Contract addresses, never tickers.** Anyone can launch a token with any ticker. Only the chain's base assets go by name (ETH, WETH, USDG on Robinhood Chain; HYPE, WHYPE, USDT0, USDC on HyperEVM; ETH, WETH, USDC, USDT on Base, Ethereum and Arbitrum; SOL, USDC, USDT on Solana). For anything else, get the address from the user or from a source they trust. If they give only a ticker, ask for the address; don't guess one.
 2. **Check before every buy.** Run `token_risk` on the token being bought. Never skip it, even for a token bought before: owners and liquidity change.
 3. **Quote before you build.** Show the `swap_quote` result before calling `swap_build`.
 4. **The user signs.** Fivebar returns unsigned transactions. Never ask for, accept, store or repeat a private key or seed phrase. If the user pastes one, tell them to move their funds to a new wallet.
@@ -39,7 +39,7 @@ Claude Code: `claude mcp add --transport http fivebar https://fivebar.xyz/mcp`. 
 
 ### 1. Find
 
-- Pin down the chain and the contract address. A 0x address defaults to Robinhood Chain; pass `chain` for Base, Ethereum or Arbitrum. A Solana address is a mint.
+- Pin down the chain and the contract address. A 0x address defaults to Robinhood Chain; pass `chain` for HyperEVM, Base, Ethereum or Arbitrum. A Solana address is a mint.
 - `token_quote` with the address (and `chain`): confirm the name, symbol and decimals match what the user expects, and note the price and market cap.
 - If the result says the pool is thin (`liquidity: "thin"`, `priceSource: "router"`), tell the user: the pool's own price is unreliable, and big trades will move the price.
 
@@ -65,7 +65,8 @@ Claude Code: `claude mcp add --transport http fivebar https://fivebar.xyz/mcp`. 
 ### 4. Swap
 
 - After the user says yes: `swap_build` with the same arguments, including `taker`.
-- If the agent has the Fivebar Branch installed (the local `fivebar` MCP with a `swap` tool), use its `swap` tool instead: it builds, checks (known router, exact approval, chain, the user's swap ceiling) and signs locally with the agent's own wallet, so this step's checks happen inside it. Still show the quote and get a yes first.
+- If the agent has the Fivebar Wallet installed (the local `fivebar` MCP with a `swap` tool), use its `swap` tool instead: it builds, checks (known router, exact approval, chain, the user's swap ceiling) and signs locally with the agent's own wallet, so this step's checks happen inside it. Still show the quote and get a yes first.
+- If the agent has no wallet to sign with, call `wallet_setup`: it explains how to install the Fivebar Wallet, or how to use the agent's own wallet with `swap_build`.
 - EVM chains return steps in order: an approval (only when needed), then the swap. Check the approval is exact (rule 5) and the swap goes to the contract the build named. The user's wallet signs and sends each step, in order, waiting for each to confirm.
 - Solana returns one versioned transaction (base64) for the user's wallet to sign and send.
 - If the quote has moved since the user said yes (a worse minimum, new warnings), show the new numbers and ask again.
@@ -80,8 +81,13 @@ Claude Code: `claude mcp add --transport http fivebar https://fivebar.xyz/mcp`. 
 
 - **"Is this token safe?"**: steps 1 and 2 only, and report. No quote, no build.
 - **"What do I hold?"**: `wallet_holdings` with their address (all four EVM chains for a 0x address, or Solana). Lead with the total, flag anything flagged by its risk verdict, list the airdrops to leave alone.
+- **"Is this token safe?" / "Check this token"** (Robinhood Chain): `token_report` first. It runs the safety check, holders, launch and dev together and gives one verdict with reasons; lead with the most serious reason. On Solana, `token_risk`.
+- **"Who holds it?" / "Is it bundled?" / "Is the dev selling?"** (Robinhood Chain, Solana, Ethereum and Base): `token_holders` for holders and linked clusters, `bundle_check` for who bought in the first minute and whether they're connected, `dev_check` for what the launcher received, holds, sold, sent and burned. Report the numbers; a linked cluster or a selling dev is a fact, not proof of intent. The full routine is the fivebar-token-checks skill.
+- **"Where did the money go?" / "Who funded this wallet?"**: `wallet_flows` with the address (and chain). Lead with the biggest source and the biggest destination; say when funds went to a fresh wallet or a token was minted to it. USD is at today's prices, so it shows size, not profit.
 - **Robinhood stock tokens**: `stocks_list` and `stock_quote` (Chainlink prices). Stock tokens can't be swapped through Fivebar yet ("xStocks coming soon").
+- **The company behind a stock** (financials, insiders, dilution, filings, fund holdings): the fivebar-research skill.
 - **Perps**: `perps_markets` and `perp_quote` for Hyperliquid data (read only, no trading).
+- **Prediction markets**: `prediction_markets` (search Polymarket by topic) and `prediction_market` (one market's odds over time, by link). Read only, no betting; quote the market you mean and say when it's thin.
 - **Paying an x402 seller or trusting another agent**: `check_seller` (is its demand real?) and `agent_lookup` (its Fivebar Score). "Not scored yet" means too little independent evidence, not a bad record.
 
 ## When something goes wrong

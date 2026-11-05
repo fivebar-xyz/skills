@@ -1,8 +1,8 @@
 {
   "name": "fivebar",
-  "displayName": "Fivebar Trading",
-  "description": "Trade tokens safely on Robinhood Chain, Solana, Base, Ethereum and Arbitrum: the Fivebar MCP (prices, risk checks, quotes, unsigned swaps, wallet holdings) plus the fivebar-trading skill, which teaches the routine: find by address, check, quote, swap with your own wallet, watch.",
-  "version": "1.0.3",
+  "displayName": "Fivebar",
+  "description": "Live data and safe actions for AI agents, with every answer's sources: the Fivebar MCP plus three skills. fivebar-trading (find, check, quote, swap with your own wallet, watch), fivebar-token-checks (bundles, the dev, holders, follow the money, x402 seller checks on Robinhood Chain, Solana, Ethereum and Base) and fivebar-research (SEC financials, insider trades, dilution, filings, fund holdings, Polymarket odds).",
+  "version": "1.1.0",
   "author": {
     "name": "fivebar"
   },
@@ -18,7 +18,12 @@
     "solana",
     "base",
     "token-risk",
-    "x402"
+    "x402",
+    "sec",
+    "due-diligence",
+    "dilution",
+    "bundle-check",
+    "ethereum"
   ],
   "privacyPolicyUrl": "https://fivebar.xyz/privacy"
 }
